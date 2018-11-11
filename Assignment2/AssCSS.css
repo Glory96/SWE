@@ -1,0 +1,44 @@
+fieldset.top {
+	
+	width: 500px;
+	margin:auto;
+	height: 650px;
+	
+
+}
+
+fieldset.specific {
+	margin-right: 250px;
+	padding-top: 0.5px;
+    padding-bottom: 0.5px;
+	width: 400px;
+	margin:auto;
+}
+
+
+table, th, td {
+	
+	border: 1px solid black;
+}
+
+#h1{
+	background-color:black;
+	font-size: 250%;
+	color: white;
+	text-align: center;
+}
+
+#p {
+	
+	font-size: 50%;
+}
+
+#printButton
+{
+	
+	margin:10px;
+
+}
+
+
+	

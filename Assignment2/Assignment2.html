@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+
+<fieldset id="p" class="top">
+<head>
+<link rel="stylesheet" type="text/css" href="AssCss.css" >
+<header> <h1 id="h1">  The Shopping Items <h1> <header>
+</head>
+
+<body>
+
+
+
+<fieldset class="specific">
+
+<legend> <p> Contact Details </p> </legend>
+
+
+
+<p>
+	<label> Name: </label>
+	<input type="text" id="name" name="name" required />
+</p>
+
+<p>
+
+	<label> Email: </label>
+	<input type="text" id="email" name="email" required />
+</p>
+
+
+</fieldset>
+
+
+
+<fieldset class="specific">
+
+<legend> <p> Available Items: </p> </legend>
+
+<p>
+	<label> Item: </label>
+		<select name="ncontacts" id="demo" onchange="ChooseContact(this);"></select>
+	
+</P>
+<P>
+	<label> Price: </label>
+	<label id="demo2"></label>
+	
+</P>
+<P>
+	<label> Quantity (between 1 and 5): </label>
+	<input type="number"  id= "quantity" name="quantity" min="1" max="5" />
+</p>
+<p>
+	<input type="submit" onclick="addFunction();" value="Add To The Cart" />
+</p>
+</fieldset>
+
+<fieldset class="specific">
+
+<legend> <p> Invoice Details: </p> </legend>
+
+<table id="table">
+	<tr>
+		<td> Sr. </td>
+		<td> Item Name </td>
+		<td> Price </td>
+		<td> Count </td>	
+		<td> Total </td>
+		<td> </td>
+	</tr>
+</table>
+
+
+ <input type="button" onClick="tamFunction();" value="Print and Send to Email" /> 
+
+
+</fieldset>
+
+
+
+<script>
+	var text;
+	var text2;
+	var priceByIndex;
+	var myTable;
+	var myElements = [];
+	var nElements = 0;
+	var rows = 1;
+	
+	var items = [{name:"Select an Item", price:0.00},
+				{name:"Notebook", price:10.00},
+				{name:"Pen", price:5.00},
+				{name:"Toy", price:15.00}];
+	var nItems = items.length;
+	
+	for (var i = 0; i < nItems; i++) {
+		text += "<option>" + items[i].name + "</option>";
+	}
+	document.getElementById("demo").innerHTML = text;
+
+	text2 = items[0].price + " SR.";
+	document.getElementById("demo2").innerHTML = text2;
+	
+	function ChooseContact(data)
+	{
+	
+    priceByIndex = items[document.getElementById("demo").selectedIndex].price;
+	text2 = "<text>" + priceByIndex + " SR." + "</text>";
+	document.getElementById("demo2").innerHTML = text2;
+	}
+</script>
+
+
+<script>
+function addFunction()
+	{
+	
+	
+    var x = document.getElementById("name").value;
+	var at = document.getElementById("email").value.indexOf("@");
+    if (x.length == 0) {
+        alert("Name must be filled out");
+        return false;
+    }
+	
+	if (at == -1) {
+	alert("Not a valid e-mail!");
+	}
+	
+	
+	var index = document.getElementById("demo").selectedIndex;
+	var quantity = document.getElementById("quantity").value;
+	var totalPrice = priceByIndex*quantity;
+	var selectedItem = document.getElementById("demo").options[document.getElementById("demo").selectedIndex].text;
+	var countCell;
+	
+	if( index ==0 )
+	alert("Please select an Item");
+	
+	else if( quantity == 0 )
+	alert("Please select a Quantity!");
+	
+	else if (nElements > 0 && (myElements.includes(selectedItem)))
+	{
+		countCell = table.rows[myElements.indexOf(selectedItem)+1].cells[3].innerHTML;
+		if((parseInt(countCell) + parseInt(document.getElementById("quantity").value)) > 5)
+		{
+		 alert("You can not exceed 5 quantities!");
+		}
+	
+		else{
+			
+        countCell = parseInt(countCell) + parseInt(document.getElementById("quantity").value);
+		table.rows[myElements.indexOf(selectedItem)+1].cells[4].innerHTML = priceByIndex*countCell;
+		table.rows[myElements.indexOf(selectedItem)+1].cells[3].innerHTML = countCell.toString();
+		}
+	
+	}
+	
+	
+	else if (nElements > 0 )
+	{
+	
+	myTable+= "<tr>";
+	myTable+= "<td>" + (nElements+1) +  "</td>";
+	myTable+= "<td>" + selectedItem + "</td>";
+	myTable+= "<td>" + items[document.getElementById("demo").selectedIndex].price +  "</td>";
+	myTable+= "<td>" + document.getElementById("quantity").value +  "</td>";
+	myTable+= "<td>" + totalPrice +  "</td>";
+	myTable+= "<td> <input type='button' onclick='SomeDeleteRowFunction(this);' value='Delete'/></td>";
+	myTable+= "</tr>";
+	rows += 1;
+	myElements[nElements] = selectedItem;
+	nElements ++;
+	
+
+	document.getElementById("table").innerHTML = myTable;
+	
+	}
+	
+	else {
+	 
+	myTable = "<tr>";
+	myTable+= "<td>" + "Sr." +  "</td>";
+	myTable+= "<td>" + "Item Name" +  "</td>";
+	myTable+= "<td>" + "Price" +  "</td>";
+	myTable+= "<td>" + "Count" +  "</td>";
+	myTable+= "<td>" + "Total" +  "</td>";
+	myTable+= "<td>" + "" +  "</td>";
+	myTable+= "</tr>";
+	
+	myTable+= "<tr>";
+	myTable+= "<td>" + (nElements+1) +  "</td>";
+	myTable+= "<td>" + selectedItem + "</td>";
+	myTable+= "<td>" + items[document.getElementById("demo").selectedIndex].price +  "</td>";
+	myTable+= "<td>" + document.getElementById("quantity").value +  "</td>";
+	myTable+= "<td>" + totalPrice +  "</td>";
+	myTable+= "<td> <input type='button' onclick='SomeDeleteRowFunction(this);' value='Delete'/></td>";
+	myTable+= "</tr>";
+	rows += 1;
+	myElements[nElements] = selectedItem;
+	nElements ++;
+	
+	document.getElementById("table").innerHTML = myTable;
+	}
+	}
+</script>
+
+<script>
+function SomeDeleteRowFunction(x)
+ {
+      
+      var td = event.target.parentNode; 
+      var tr = td.parentNode; 
+	
+	  var indexToDelete = tr.rowIndex;
+	  myElements.splice(indexToDelete-1,1);
+	  rows-=1;
+	  nElements--;
+	  tr.parentNode.removeChild(tr);
+}
+</script>
+
+<script>
+
+function tamFunction()
+{
+
+	if(document.getElementById("table").rows.length == 1)
+	alert("You mus add item first");
+	
+	else{
+	var x = document.getElementById("table").rows.length;
+	var clientName = document.getElementById("name").value;
+	var clientEmail = document.getElementById("email").value;
+	var clientTable = [];
+	
+	for(var i = 1; i < x; i++)
+	{
+		
+		clientTable[i-1] = document.getElementById("table").rows[i].cells[1].innerHTML;
+	
+	}
+	if (typeof(Storage) !== "undefined") {
+    localStorage.setItem("name", clientName);
+	localStorage.setItem("email",clientEmail);
+	localStorage.setItem("table",clientTable);
+	window.open('tamplet.html','_blank');
+	}
+	
+	else {
+	
+	alert("Change to up-to-date Browser.");
+	
+	}
+	
+    }
+}
+
+</script>
+
+
+
+</body>
+
+</fieldset>
+
+
+</html>
